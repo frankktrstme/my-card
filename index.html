@@ -14,31 +14,34 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #0a0a0a; /* Глубокий черный */
+            background-color: #0a0a0a;
             color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* Кроваво-красное свечение на фоне */
-        .glow {
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(255, 0, 60, 0.15) 0%, rgba(10, 10, 10, 0) 70%);
-            top: 5%;
-            left: 5%;
+        /* Эффект свечения, следующего за мышкой */
+        .cursor-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 0, 60, 0.08) 0%, rgba(10, 10, 10, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
             z-index: -1;
-            animation: pulseBg 6s infinite alternate;
+            transition: opacity 0.3s ease;
         }
+
         .glow-2 {
             position: absolute;
             width: 400px;
             height: 400px;
-            background: radial-gradient(circle, rgba(150, 0, 30, 0.2) 0%, rgba(10, 10, 10, 0) 70%);
+            background: radial-gradient(circle, rgba(150, 0, 30, 0.15) 0%, rgba(10, 10, 10, 0) 70%);
             bottom: 5%;
             right: 5%;
             z-index: -1;
@@ -60,10 +63,11 @@
             max-width: 600px;
             box-shadow: 0 20px 50px rgba(255, 0, 60, 0.1);
             margin: 20px;
-            /* Анимация появления */
             animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0;
             transform: translateY(40px);
+            position: relative;
+            z-index: 1;
         }
 
         @keyframes slideUp {
@@ -84,7 +88,6 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
             text-transform: uppercase;
-            /* Легкое свечение текста */
             filter: drop-shadow(0 0 10px rgba(255, 0, 60, 0.3));
         }
 
@@ -115,7 +118,6 @@
             overflow: hidden;
         }
 
-        /* Красная полоса слева при наведении */
         .service-item::before {
             content: '';
             position: absolute;
@@ -203,6 +205,7 @@
             gap: 10px;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
 
         .btn-tg {
@@ -214,6 +217,18 @@
             background-color: #d60032;
             transform: translateY(-3px) scale(1.02);
             box-shadow: 0 8px 25px rgba(255, 0, 60, 0.6);
+        }
+
+        /* Стиль для Discord кнопки */
+        .btn-ds {
+            background-color: #5865F2;
+            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
+        }
+        
+        .btn-ds:hover {
+            background-color: #4752C4;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(88, 101, 242, 0.6);
         }
 
         .btn-tt {
@@ -228,6 +243,14 @@
             box-shadow: 0 5px 20px rgba(255, 0, 60, 0.2);
         }
 
+        .footer-text {
+            margin-top: 30px;
+            font-size: 11px;
+            color: #444;
+            text-align: center;
+            font-weight: 300;
+        }
+
         /* Для телефонов */
         @media (max-width: 500px) {
             .card { padding: 25px; }
@@ -240,7 +263,7 @@
 </head>
 <body>
 
-    <div class="glow"></div>
+    <div class="cursor-glow" id="cursor-glow"></div>
     <div class="glow-2"></div>
 
     <div class="card">
@@ -254,7 +277,7 @@
                 <div class="service-icon">🤖</div>
                 <div class="service-text">
                     <h3>Разработка ботов</h3>
-                    <p>Создание Telegram и Discord ботов любой сложности</p>
+                    <p>Создание Telegram и Discord ботов под ключ</p>
                 </div>
             </div>
 
@@ -262,7 +285,7 @@
                 <div class="service-icon">💳</div>
                 <div class="service-text">
                     <h3>Оплата зарубежных сервисов</h3>
-                    <p>Помощь с покупками в Steam, Discord, подписками и др.</p>
+                    <p>Помощь с покупками в Steam, Discord и подписками</p>
                 </div>
             </div>
         </div>
@@ -270,16 +293,45 @@
         <div class="contacts">
             <p>Связаться со мной:</p>
             <div class="links">
-                <!-- Изменил href, чтобы сразу открывался чат -->
                 <a href="https://t.me/kiduma" class="btn btn-tg" target="_blank">
-                    <span>✈️</span> Telegram: @kiduma
+                    <span>✈️</span> Telegram
+                </a>
+                <a href="https://discord.com/users/t8x9o" class="btn btn-ds" target="_blank" id="discord-btn">
+                    <span>👾</span> Discord
                 </a>
                 <a href="https://www.tiktok.com/@dxbxckwood" class="btn btn-tt" target="_blank">
-                    <span>🎵</span> TikTok: @dxbxckwood
+                    <span>🎵</span> TikTok
                 </a>
             </div>
         </div>
+
+        <div class="footer-text">
+            © 2026 Duentuzz. Все права защищены.
+        </div>
     </div>
 
+    <script>
+        // 1. Эффект свечения за мышкой
+        const glow = document.getElementById('cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+        });
+
+        // 2. Копирование Discord тега при клике (чтобы удобно было писать)
+        const discordBtn = document.getElementById('discord-btn');
+        discordBtn.addEventListener('click', (e) => {
+            // Если это ПК, копируем ник в буфер
+            navigator.clipboard.writeText('t8x9o').then(() => {
+                const originalText = discordBtn.innerHTML;
+                discordBtn.innerHTML = '<span>✅</span> Ник скопирован!';
+                setTimeout(() => {
+                    discordBtn.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.log('Ошибка копирования: ', err);
+            });
+        });
+    </script>
 </body>
 </html>
