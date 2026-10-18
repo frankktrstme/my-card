@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duentuzz | Digital Services</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <title>Franko | Premium Digital Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,177 +12,255 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #ff003c;
+            --secondary: #ff5e00;
+            --bg: #050505;
+            --glass: rgba(20, 20, 20, 0.4);
+        }
+
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #0a0a0a;
+            background-color: var(--bg);
             color: #ffffff;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            perspective: 1000px;
         }
 
-        /* Эффект свечения, следующего за мышкой */
-        .cursor-glow {
+        /* ------ ЖИВОЙ ФОН И ЧАСТИЦЫ ------ */
+        .bg-grid {
             position: fixed;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(255, 0, 60, 0.08) 0%, rgba(10, 10, 10, 0) 70%);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: -3;
+            mask-image: radial-gradient(circle at center, black 20%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black 20%, transparent 80%);
+        }
+
+        .particle {
+            position: fixed;
+            background: var(--primary);
             border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: -1;
-            transition: opacity 0.3s ease;
+            filter: blur(2px);
+            animation: floatParticle linear infinite;
+            z-index: -2;
+            opacity: 0.6;
         }
 
-        .glow-2 {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(150, 0, 30, 0.15) 0%, rgba(10, 10, 10, 0) 70%);
-            bottom: 5%;
-            right: 5%;
-            z-index: -1;
-            animation: pulseBg 8s infinite alternate-reverse;
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) scale(1); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(0); opacity: 0; }
         }
 
-        @keyframes pulseBg {
-            0% { transform: scale(1); opacity: 0.5; }
-            100% { transform: scale(1.2); opacity: 1; }
-        }
-
-        .card {
-            background: rgba(20, 20, 20, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 0, 60, 0.2);
-            border-radius: 24px;
-            padding: 40px;
+        /* ------ БЕГУЩАЯ СТРОКА ------ */
+        .ticker-wrap {
             width: 100%;
-            max-width: 600px;
-            box-shadow: 0 20px 50px rgba(255, 0, 60, 0.1);
-            margin: 20px;
-            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0;
-            transform: translateY(40px);
+            overflow: hidden;
+            background: rgba(255, 0, 60, 0.05);
+            border-top: 1px solid rgba(255, 0, 60, 0.1);
+            border-bottom: 1px solid rgba(255, 0, 60, 0.1);
+            padding: 12px 0;
+            backdrop-filter: blur(5px);
             position: relative;
+            z-index: 10;
+            margin-bottom: 50px;
+        }
+
+        .ticker {
+            display: inline-block;
+            white-space: nowrap;
+            animation: ticker 25s linear infinite;
+            font-weight: 900;
+            color: #fff;
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            -webkit-text-stroke: 1px rgba(255, 0, 60, 0.5);
+            color: transparent;
+        }
+
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        /* ------ ГЛАВНАЯ КАРТОЧКА (GLASSMORPHISM) ------ */
+        .main-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 20px 50px;
             z-index: 1;
         }
 
-        @keyframes slideUp {
-            to { opacity: 1; transform: translateY(0); }
+        /* Свечение вокруг карточки */
+        .main-container::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--primary));
+            background-size: 400% 400%;
+            z-index: -1;
+            filter: blur(15px);
+            border-radius: 32px;
+            animation: gradientBorder 5s ease infinite;
+            opacity: 0.6;
         }
 
+        @keyframes gradientBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 50px 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            transform-style: preserve-3d;
+        }
+
+        /* ------ ЗАГОЛОВОК С ЭФФЕКТОМ ПЕЧАТИ ------ */
         .header {
             text-align: center;
             margin-bottom: 40px;
         }
 
         .header h1 {
-            font-size: 36px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            background: linear-gradient(90deg, #ff003c, #ff5e00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-family: 'Space Mono', monospace;
+            font-size: 44px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255, 0, 60, 0.5), 0 0 40px rgba(255, 0, 60, 0.3);
             margin-bottom: 10px;
-            text-transform: uppercase;
-            filter: drop-shadow(0 0 10px rgba(255, 0, 60, 0.3));
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid var(--primary);
+            /* Изменил анимацию под 6 букв (Franko) */
+            animation: typing 1.5s steps(6), blink 0.75s step-end infinite; 
+            max-width: max-content;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--primary); }
         }
 
         .header p {
-            font-size: 14px;
-            color: #888;
+            font-size: 13px;
+            color: #aaa;
             font-weight: 400;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 5px;
+            margin-top: 10px;
         }
 
+        /* ------ УСЛУГИ (СЛОИСТЫЕ КАРТОЧКИ) ------ */
         .services {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
             margin-bottom: 40px;
+            transform: translateZ(30px); /* 3D эффект */
         }
 
         .service-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 25px;
+            border-radius: 20px;
             display: flex;
             align-items: center;
-            transition: all 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
         }
 
-        .service-item::before {
+        .service-item::after {
             content: '';
             position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 3px;
-            background: #ff003c;
-            transform: scaleY(0);
-            transition: transform 0.4s ease;
-            transform-origin: bottom;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 60, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .service-item:hover::after {
+            transform: translateX(100%);
         }
 
         .service-item:hover {
-            transform: translateX(10px);
-            border-color: rgba(255, 0, 60, 0.3);
-            background: rgba(255, 0, 60, 0.03);
-            box-shadow: 0 5px 15px rgba(255, 0, 60, 0.05);
-        }
-
-        .service-item:hover::before {
-            transform: scaleY(1);
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(255, 0, 60, 0.5);
+            box-shadow: 0 15px 30px rgba(255, 0, 60, 0.2);
+            background: rgba(255, 0, 60, 0.05);
         }
 
         .service-icon {
-            font-size: 26px;
-            margin-right: 20px;
-            background: rgba(255, 0, 60, 0.1);
-            padding: 12px;
-            border-radius: 12px;
+            font-size: 32px;
+            margin-right: 25px;
+            background: rgba(255, 0, 60, 0.15);
+            padding: 15px;
+            border-radius: 18px;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease;
+            box-shadow: inset 0 0 15px rgba(255, 0, 60, 0.3);
         }
 
         .service-item:hover .service-icon {
-            transform: scale(1.1) rotate(5deg);
+            transform: scale(1.15) rotate(-10deg);
         }
 
         .service-text h3 {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             color: #fff;
         }
 
         .service-text p {
-            font-size: 13px;
-            color: #999;
+            font-size: 14px;
+            color: #aaa;
             font-weight: 300;
+            line-height: 1.4;
         }
 
+        /* ------ КНОПКИ КОНТАКТОВ (МАГНИТНЫЕ) ------ */
         .contacts {
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
             padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateZ(20px);
         }
 
         .contacts p {
-            font-size: 13px;
-            color: #666;
+            font-size: 12px;
+            color: #777;
             margin-bottom: 20px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
 
         .links {
@@ -196,141 +274,236 @@
             text-decoration: none;
             color: #fff;
             font-weight: 700;
-            font-size: 14px;
-            padding: 14px 24px;
-            border-radius: 12px;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-size: 15px;
+            padding: 15px 30px;
+            border-radius: 14px;
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
+            border: none;
             position: relative;
             overflow: hidden;
-            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
         }
 
         .btn-tg {
-            background-color: #ff003c;
-            box-shadow: 0 4px 15px rgba(255, 0, 60, 0.4);
-        }
-        
-        .btn-tg:hover {
-            background-color: #d60032;
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(255, 0, 60, 0.6);
+            background: linear-gradient(45deg, #ff003c, #ff5e00);
+            box-shadow: 0 8px 20px rgba(255, 0, 60, 0.4);
         }
 
-        /* Стиль для Discord кнопки */
         .btn-ds {
-            background-color: #5865F2;
-            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
-        }
-        
-        .btn-ds:hover {
-            background-color: #4752C4;
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(88, 101, 242, 0.6);
+            background: linear-gradient(45deg, #5865F2, #4752C4);
+            box-shadow: 0 8px 20px rgba(88, 101, 242, 0.4);
         }
 
         .btn-tt {
-            background-color: #111;
-            border: 1px solid #333;
+            background: linear-gradient(45deg, #222, #000);
+            border: 1px solid #444;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
         }
-        
-        .btn-tt:hover {
-            background-color: #000;
-            border-color: #ff003c;
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 5px 20px rgba(255, 0, 60, 0.2);
+
+        /* ------ КНОПКА ВНИЗУ ------ */
+        .cta-section {
+            text-align: center;
+            width: 100%;
+            max-width: 700px;
+            padding: 0 20px;
+            z-index: 1;
+        }
+
+        .btn-mega {
+            display: block;
+            width: 100%;
+            padding: 22px;
+            font-size: 20px;
+            background: linear-gradient(90deg, #ff003c, #ff5e00, #ff003c);
+            background-size: 200% auto;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.4s ease;
+            box-shadow: 0 15px 35px rgba(255, 0, 60, 0.4);
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        .btn-mega:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 45px rgba(255, 0, 60, 0.7);
         }
 
         .footer-text {
-            margin-top: 30px;
-            font-size: 11px;
-            color: #444;
+            margin-top: 25px;
+            margin-bottom: 30px;
+            font-size: 12px;
+            color: #555;
             text-align: center;
-            font-weight: 300;
+            letter-spacing: 1px;
         }
 
-        /* Для телефонов */
-        @media (max-width: 500px) {
-            .card { padding: 25px; }
-            .header h1 { font-size: 28px; }
+        /* ------ МОБИЛЬНАЯ АДАПТАЦИЯ ------ */
+        @media (max-width: 600px) {
+            .glass-card { padding: 30px 20px; }
+            .header h1 { font-size: 32px; }
             .links { flex-direction: column; }
             .btn { justify-content: center; width: 100%; }
-            .service-icon { padding: 10px; font-size: 22px; margin-right: 15px; }
+            .service-item { flex-direction: column; text-align: center; }
+            .service-icon { margin-right: 0; margin-bottom: 15px; }
+            .ticker { font-size: 12px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="cursor-glow" id="cursor-glow"></div>
-    <div class="glow-2"></div>
+    <!-- Фоновая сетка и частицы -->
+    <div class="bg-grid"></div>
+    <div class="particle" style="left: 10%; animation-duration: 15s; width: 4px; height: 4px;"></div>
+    <div class="particle" style="left: 30%; animation-duration: 20s; width: 6px; height: 6px; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 70%; animation-duration: 18s; width: 3px; height: 3px; animation-delay: 5s;"></div>
+    <div class="particle" style="left: 90%; animation-duration: 22s; width: 5px; height: 5px; animation-delay: 1s;"></div>
+    <div class="particle" style="left: 50%; animation-duration: 16s; width: 8px; height: 8px; animation-delay: 7s;"></div>
 
-    <div class="card">
-        <div class="header">
-            <h1>Duentuzz</h1>
-            <p>Digital Services</p>
+    <!-- Бегущая строка -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            PREMIUM BOTS • STEAM GIFTS • DISCORD SERVICES • TELEGRAM BOTS • WEB DEVELOPMENT • PREMIUM BOTS • STEAM GIFTS • DISCORD SERVICES • TELEGRAM BOTS • WEB DEVELOPMENT • 
         </div>
+    </div>
 
-        <div class="services">
-            <div class="service-item">
-                <div class="service-icon">🤖</div>
-                <div class="service-text">
-                    <h3>Разработка ботов</h3>
-                    <p>Создание Telegram и Discord ботов под ключ</p>
+    <!-- Карточка -->
+    <div class="main-container">
+        <div class="glass-card">
+            <div class="header">
+                <h1>Franko</h1>
+                <p>Digital Services</p>
+            </div>
+
+            <div class="services">
+                <div class="service-item">
+                    <div class="service-icon">🤖</div>
+                    <div class="service-text">
+                        <h3>Разработка ботов</h3>
+                        <p>Создание Telegram и Discord ботов любой сложности под ключ</p>
+                    </div>
+                </div>
+
+                <div class="service-item">
+                    <div class="service-icon">💳</div>
+                    <div class="service-text">
+                        <h3>Оплата зарубежных сервисов</h3>
+                        <p>Помощь с покупками в Steam, Discord и оформлением подписок</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="service-item">
-                <div class="service-icon">💳</div>
-                <div class="service-text">
-                    <h3>Оплата зарубежных сервисов</h3>
-                    <p>Помощь с покупками в Steam, Discord и подписками</p>
+            <div class="contacts">
+                <p>Связаться со мной:</p>
+                <div class="links">
+                    <a href="https://t.me/kiduma" class="btn btn-tg magnetic" target="_blank">
+                        <span>✈️</span> Telegram
+                    </a>
+                    <a href="https://discord.com/users/t8x9o" class="btn btn-ds magnetic" target="_blank" id="discord-btn">
+                        <span>👾</span> Discord
+                    </a>
+                    <a href="https://www.tiktok.com/@dxbxckwood" class="btn btn-tt magnetic" target="_blank">
+                        <span>🎵</span> TikTok
+                    </a>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="contacts">
-            <p>Связаться со мной:</p>
-            <div class="links">
-                <a href="https://t.me/kiduma" class="btn btn-tg" target="_blank">
-                    <span>✈️</span> Telegram
-                </a>
-                <a href="https://discord.com/users/t8x9o" class="btn btn-ds" target="_blank" id="discord-btn">
-                    <span>👾</span> Discord
-                </a>
-                <a href="https://www.tiktok.com/@dxbxckwood" class="btn btn-tt" target="_blank">
-                    <span>🎵</span> TikTok
-                </a>
-            </div>
-        </div>
-
+    <!-- Большая кнопка связи -->
+    <div class="cta-section">
+        <a href="https://t.me/kiduma" class="btn-mega" target="_blank">
+            Написать мне в Telegram
+        </a>
         <div class="footer-text">
-            © 2026 Duentuzz. Все права защищены.
+            © 2026 Franko. Все права защищены.
         </div>
     </div>
 
     <script>
-        // 1. Эффект свечения за мышкой
-        const glow = document.getElementById('cursor-glow');
-        document.addEventListener('mousemove', (e) => {
-            glow.style.left = e.clientX + 'px';
-            glow.style.top = e.clientY + 'px';
+        // 1. Магнитный эффект для кнопок
+        const magneticBtns = document.querySelectorAll('.magnetic');
+        
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px) scale(1.05)`;
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = `translate(0px, 0px) scale(1)`;
+            });
         });
 
-        // 2. Копирование Discord тега при клике (чтобы удобно было писать)
+        // 2. Копирование Discord
         const discordBtn = document.getElementById('discord-btn');
         discordBtn.addEventListener('click', (e) => {
-            // Если это ПК, копируем ник в буфер
             navigator.clipboard.writeText('t8x9o').then(() => {
                 const originalText = discordBtn.innerHTML;
-                discordBtn.innerHTML = '<span>✅</span> Ник скопирован!';
+                discordBtn.innerHTML = '<span>✅</span> Скопировано!';
                 setTimeout(() => {
                     discordBtn.innerHTML = originalText;
                 }, 2000);
-            }).catch(err => {
-                console.log('Ошибка копирования: ', err);
             });
+        });
+
+        // 3. 3D эффект наклона карточки за мышкой
+        const card = document.querySelector('.glass-card');
+        const container = document.querySelector('.main-container');
+
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -5; // Наклон по X
+            const rotateY = ((x - centerX) / centerX) * 5;  // Наклон по Y
+            
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        container.addEventListener('mouseleave', () => {
+            card.style.transform = `rotateX(0) rotateY(0)`;
+            card.style.transition = 'transform 0.5s ease';
+        });
+        
+        container.addEventListener('mouseenter', () => {
+            card.style.transition = 'none';
         });
     </script>
 </body>
