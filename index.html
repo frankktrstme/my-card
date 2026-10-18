@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #0f0f13;
+            background-color: #0a0a0a; /* Глубокий черный */
             color: #ffffff;
             display: flex;
             justify-content: center;
@@ -23,41 +23,50 @@
             overflow-x: hidden;
         }
 
-        /* Красивое свечение на фоне */
+        /* Кроваво-красное свечение на фоне */
         .glow {
             position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(124, 92, 255, 0.2) 0%, rgba(15, 15, 19, 0) 70%);
-            top: 10%;
-            left: 10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 0, 60, 0.15) 0%, rgba(10, 10, 10, 0) 70%);
+            top: 5%;
+            left: 5%;
             z-index: -1;
+            animation: pulseBg 6s infinite alternate;
         }
         .glow-2 {
             position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(0, 255, 204, 0.1) 0%, rgba(15, 15, 19, 0) 70%);
-            bottom: 10%;
-            right: 10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(150, 0, 30, 0.2) 0%, rgba(10, 10, 10, 0) 70%);
+            bottom: 5%;
+            right: 5%;
             z-index: -1;
+            animation: pulseBg 8s infinite alternate-reverse;
+        }
+
+        @keyframes pulseBg {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.2); opacity: 1; }
         }
 
         .card {
-            background: rgba(25, 25, 30, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(20, 20, 20, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 0, 60, 0.2);
             border-radius: 24px;
             padding: 40px;
             width: 100%;
             max-width: 600px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 50px rgba(255, 0, 60, 0.1);
             margin: 20px;
-            animation: fadeIn 0.8s ease-out;
+            /* Анимация появления */
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(40px);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes slideUp {
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -67,21 +76,24 @@
         }
 
         .header h1 {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 900;
-            letter-spacing: 1px;
-            background: linear-gradient(90deg, #7C5CFF, #00FFCC);
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #ff003c, #ff5e00);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
+            text-transform: uppercase;
+            /* Легкое свечение текста */
+            filter: drop-shadow(0 0 10px rgba(255, 0, 60, 0.3));
         }
 
         .header p {
             font-size: 14px;
             color: #888;
-            font-weight: 300;
+            font-weight: 400;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
         }
 
         .services {
@@ -92,36 +104,63 @@
         }
 
         .service-item {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.05);
             padding: 20px;
             border-radius: 16px;
             display: flex;
             align-items: center;
-            transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Красная полоса слева при наведении */
+        .service-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: #ff003c;
+            transform: scaleY(0);
+            transition: transform 0.4s ease;
+            transform-origin: bottom;
         }
 
         .service-item:hover {
             transform: translateX(10px);
-            border-color: #7C5CFF;
-            background: rgba(124, 92, 255, 0.05);
+            border-color: rgba(255, 0, 60, 0.3);
+            background: rgba(255, 0, 60, 0.03);
+            box-shadow: 0 5px 15px rgba(255, 0, 60, 0.05);
+        }
+
+        .service-item:hover::before {
+            transform: scaleY(1);
         }
 
         .service-icon {
-            font-size: 24px;
+            font-size: 26px;
             margin-right: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
+            background: rgba(255, 0, 60, 0.1);
+            padding: 12px;
             border-radius: 12px;
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .service-item:hover .service-icon {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .service-text h3 {
             font-size: 16px;
             font-weight: 700;
             margin-bottom: 5px;
+            color: #fff;
         }
 
         .service-text p {
@@ -132,20 +171,22 @@
 
         .contacts {
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             padding-top: 30px;
         }
 
         .contacts p {
-            font-size: 14px;
+            font-size: 13px;
             color: #666;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .links {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
@@ -154,39 +195,46 @@
             color: #fff;
             font-weight: 700;
             font-size: 14px;
-            padding: 12px 24px;
+            padding: 14px 24px;
             border-radius: 12px;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-tg {
-            background-color: #229ED9;
-            box-shadow: 0 4px 15px rgba(34, 158, 217, 0.3);
+            background-color: #ff003c;
+            box-shadow: 0 4px 15px rgba(255, 0, 60, 0.4);
         }
+        
         .btn-tg:hover {
-            background-color: #1a7db0;
-            transform: translateY(-3px);
+            background-color: #d60032;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(255, 0, 60, 0.6);
         }
 
         .btn-tt {
-            background-color: #000000;
+            background-color: #111;
             border: 1px solid #333;
-            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05);
         }
+        
         .btn-tt:hover {
-            border-color: #fff;
-            transform: translateY(-3px);
+            background-color: #000;
+            border-color: #ff003c;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 5px 20px rgba(255, 0, 60, 0.2);
         }
 
         /* Для телефонов */
         @media (max-width: 500px) {
             .card { padding: 25px; }
-            .header h1 { font-size: 26px; }
+            .header h1 { font-size: 28px; }
             .links { flex-direction: column; }
             .btn { justify-content: center; width: 100%; }
+            .service-icon { padding: 10px; font-size: 22px; margin-right: 15px; }
         }
     </style>
 </head>
@@ -222,6 +270,7 @@
         <div class="contacts">
             <p>Связаться со мной:</p>
             <div class="links">
+                <!-- Изменил href, чтобы сразу открывался чат -->
                 <a href="https://t.me/kiduma" class="btn btn-tg" target="_blank">
                     <span>✈️</span> Telegram: @kiduma
                 </a>
