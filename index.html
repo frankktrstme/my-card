@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duentuzz | Digital Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0f0f13;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Красивое свечение на фоне */
+        .glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(124, 92, 255, 0.2) 0%, rgba(15, 15, 19, 0) 70%);
+            top: 10%;
+            left: 10%;
+            z-index: -1;
+        }
+        .glow-2 {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0, 255, 204, 0.1) 0%, rgba(15, 15, 19, 0) 70%);
+            bottom: 10%;
+            right: 10%;
+            z-index: -1;
+        }
+
+        .card {
+            background: rgba(25, 25, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            margin: 20px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #7C5CFF, #00FFCC);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #888;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .services {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .service-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .service-item:hover {
+            transform: translateX(10px);
+            border-color: #7C5CFF;
+            background: rgba(124, 92, 255, 0.05);
+        }
+
+        .service-icon {
+            font-size: 24px;
+            margin-right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .service-text h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .service-text p {
+            font-size: 13px;
+            color: #999;
+            font-weight: 300;
+        }
+
+        .contacts {
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+        }
+
+        .contacts p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-tg {
+            background-color: #229ED9;
+            box-shadow: 0 4px 15px rgba(34, 158, 217, 0.3);
+        }
+        .btn-tg:hover {
+            background-color: #1a7db0;
+            transform: translateY(-3px);
+        }
+
+        .btn-tt {
+            background-color: #000000;
+            border: 1px solid #333;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05);
+        }
+        .btn-tt:hover {
+            border-color: #fff;
+            transform: translateY(-3px);
+        }
+
+        /* Для телефонов */
+        @media (max-width: 500px) {
+            .card { padding: 25px; }
+            .header h1 { font-size: 26px; }
+            .links { flex-direction: column; }
+            .btn { justify-content: center; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow"></div>
+    <div class="glow-2"></div>
+
+    <div class="card">
+        <div class="header">
+            <h1>Duentuzz</h1>
+            <p>Digital Services</p>
+        </div>
+
+        <div class="services">
+            <div class="service-item">
+                <div class="service-icon">🤖</div>
+                <div class="service-text">
+                    <h3>Разработка ботов</h3>
+                    <p>Создание Telegram и Discord ботов любой сложности</p>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">💳</div>
+                <div class="service-text">
+                    <h3>Оплата зарубежных сервисов</h3>
+                    <p>Помощь с покупками в Steam, Discord, подписками и др.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="contacts">
+            <p>Связаться со мной:</p>
+            <div class="links">
+                <a href="https://t.me/kiduma" class="btn btn-tg" target="_blank">
+                    <span>✈️</span> Telegram: @kiduma
+                </a>
+                <a href="https://www.tiktok.com/@dxbxckwood" class="btn btn-tt" target="_blank">
+                    <span>🎵</span> TikTok: @dxbxckwood
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
