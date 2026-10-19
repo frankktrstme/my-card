@@ -1,410 +1,305 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Franko | Premium Digital Services</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Franko | Premium Digital Services</title>
+<meta name="description" content="Разработка Telegram и Discord ботов, оплата зарубежных сервисов.">
+<meta name="theme-color" content="#07070b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 rx=%2224%22 fill=%22%2307070b%22/%3E%3Ctext x=%2250%22 y=%2272%22 font-size=%2272%22 text-anchor=%22middle%22 fill=%22%23d4b176%22 font-family=%22Georgia,serif%22 font-weight=%22bold%22%3EF%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07070b;
+    --ivory: #f4efe4;
+    --muted: #8c8a9c;
+    --gold: #d4b176;
+    --gold-soft: #f1e0b8;
+    --line: rgba(255, 255, 255, 0.08);
+    --pill: rgba(255, 255, 255, 0.13);
+    --focus: #e8c987;
+    --serif: "Playfair Display", Georgia, "Times New Roman", serif;
+    --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body {
+    min-height: 100dvh;
+    background:
+      radial-gradient(900px 620px at 50% -8%, rgba(120, 92, 255, 0.17), transparent 62%),
+      radial-gradient(700px 520px at 88% 58%, rgba(212, 177, 118, 0.07), transparent 62%),
+      var(--bg);
+    color: var(--ivory);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
 
-        :root {
-            --bg: #09090b;
-            --surface: #121214;
-            --text-main: #f4f4f5;
-            --text-muted: #a1a1aa;
-            --accent: #d4d4d8;
-            --line: rgba(255, 255, 255, 0.08);
-            --glow: rgba(124, 92, 255, 0.15); /* Благородный фиолетовый */
-        }
+  /* фон */
+  .bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .orb { position: absolute; width: 560px; height: 560px; border-radius: 50%; will-change: transform; }
+  .orb.a { top: -220px; left: -200px; background: radial-gradient(circle, rgba(124, 92, 255, 0.22), transparent 68%); animation: drift 26s ease-in-out infinite alternate; }
+  .orb.b { bottom: -240px; right: -220px; background: radial-gradient(circle, rgba(212, 177, 118, 0.16), transparent 68%); animation: drift 32s ease-in-out infinite alternate-reverse; }
+  .grain {
+    position: absolute; inset: 0; opacity: 0.08; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  @keyframes drift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(60px, 40px, 0); } }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
+  .wrap {
+    position: relative; z-index: 1;
+    max-width: 680px; margin: 0 auto;
+    padding: calc(92px + env(safe-area-inset-top, 0px)) 24px calc(48px + env(safe-area-inset-bottom, 0px));
+  }
 
-        /* Элегантное фоновое свечение */
-        .ambient-glow {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(circle, var(--glow) 0%, transparent 60%);
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.8;
-        }
+  /* герой */
+  header { text-align: center; }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(64px, 19vw, 124px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    background: linear-gradient(100deg, #f4efe4 0%, #f4efe4 38%, #f6e3b4 48%, #d4b176 52%, #f4efe4 62%, #f4efe4 100%);
+    background-size: 260% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+    animation: reveal 1.7s cubic-bezier(0.2, 0.7, 0.2, 1) both, sheen 2.6s ease-in-out 1.3s both;
+  }
+  @keyframes reveal {
+    from { opacity: 0; letter-spacing: 0.14em; filter: blur(14px); }
+    to { opacity: 1; letter-spacing: -0.01em; filter: blur(0); }
+  }
+  @keyframes sheen { from { background-position: 100% 0; } to { background-position: 0% 0; } }
 
-        /* Главный контейнер */
-        .container {
-            width: 100%;
-            max-width: 800px;
-            padding: 80px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 1;
-            animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
+  .orn { display: flex; align-items: center; gap: 14px; width: min(260px, 70%); margin: 34px auto 32px; animation: rise 1s ease 0.5s both; }
+  .orn::before, .orn::after { content: ""; flex: 1; height: 1px; }
+  .orn::before { background: linear-gradient(90deg, transparent, var(--gold)); }
+  .orn::after { background: linear-gradient(270deg, transparent, var(--gold)); }
+  .orn i { width: 7px; height: 7px; background: var(--gold); transform: rotate(45deg); box-shadow: 0 0 16px 2px rgba(212, 177, 118, 0.6); }
 
-        @keyframes fadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
+  .tag {
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 0.52em; padding-left: 0.52em;
+    text-transform: uppercase; color: var(--muted);
+    animation: rise 1s ease 0.6s both;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
-        /* Заголовок */
-        .header {
-            text-align: center;
-            margin-bottom: 80px;
-            position: relative;
-        }
+  .rest { animation: rise 1s ease 0.9s both; }
 
-        .header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 64px;
-            font-weight: 600;
-            letter-spacing: -1px;
-            color: var(--text-main);
-            margin-bottom: 15px;
-            position: relative;
-            display: inline-block;
-        }
+  /* услуги */
+  .services { margin-top: 88px; display: grid; gap: 20px; }
+  .panel {
+    position: relative; isolation: isolate; overflow: hidden;
+    padding: 34px 28px 30px;
+    border-radius: 28px;
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.012));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 36px 70px -36px rgba(0, 0, 0, 0.9);
+    transition: border-color 0.35s;
+  }
+  .panel::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity 0.4s;
+    background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), rgba(212, 177, 118, 0.15), transparent 62%);
+  }
+  .panel:hover { border-color: rgba(212, 177, 118, 0.35); }
+  .panel:hover::before { opacity: 1; }
+  .head { display: flex; align-items: center; gap: 18px; }
+  .icon {
+    flex: none; width: 58px; height: 58px; display: grid; place-items: center;
+    font-size: 28px; line-height: 1; border-radius: 17px;
+    background: linear-gradient(145deg, rgba(212, 177, 118, 0.2), rgba(212, 177, 118, 0.04));
+    border: 1px solid rgba(212, 177, 118, 0.3);
+    box-shadow: 0 0 34px -8px rgba(212, 177, 118, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+  .panel h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(24px, 6.2vw, 31px); line-height: 1.2; }
+  .panel p { margin-top: 22px; color: var(--muted); font-size: 16.5px; line-height: 1.78; }
+  .chips { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips span {
+    padding: 7px 13px; border-radius: 999px; font-size: 13px; color: #b9b6c8;
+    border: 1px solid var(--line); background: rgba(255, 255, 255, 0.03);
+  }
 
-        .header h1::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.4s ease;
-        }
+  /* контакты */
+  .contact-label {
+    display: flex; align-items: center; justify-content: center; gap: 18px;
+    margin: 100px 0 34px; font-size: 14px; font-weight: 500; font-family: var(--sans);
+    letter-spacing: 0.42em; text-transform: uppercase; color: var(--muted);
+  }
+  .contact-label::before, .contact-label::after { content: ""; width: 34px; height: 1px; background: linear-gradient(90deg, transparent, rgba(212, 177, 118, 0.7)); }
+  .contact-label::after { transform: scaleX(-1); }
 
-        .header:hover h1::after {
-            width: 100%;
-        }
+  .pill {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    width: 100%; margin-bottom: 16px; padding: 21px 26px;
+    border: 1px solid var(--pill); border-radius: 999px;
+    background: rgba(255, 255, 255, 0.025);
+    color: var(--ivory); font: 500 18px/1 var(--sans); text-align: left; text-decoration: none; cursor: pointer;
+    transition: background 0.25s, border-color 0.25s, transform 0.25s;
+  }
+  .pill .r { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 15px; font-weight: 400; }
+  .pill svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.25s, color 0.25s; }
+  .pill:hover { background: rgba(212, 177, 118, 0.07); border-color: rgba(212, 177, 118, 0.5); transform: translateY(-1px); }
+  .pill:hover .r { color: var(--gold-soft); }
+  .pill:hover svg.go { transform: translate(2px, -2px); }
+  .pill:active { transform: translateY(0); }
 
-        .header p {
-            font-size: 13px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 6px;
-            font-weight: 500;
-            margin-top: 25px;
-        }
+  .cta {
+    position: relative; overflow: hidden; justify-content: center;
+    margin-top: 34px; padding: 27px 24px;
+    border: 0; color: #19130a; font-size: 20px; font-weight: 600;
+    background: linear-gradient(135deg, #f6e8c6 0%, #d4b176 55%, #b8935a 100%);
+    box-shadow: 0 20px 54px -16px rgba(212, 177, 118, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  }
+  .cta::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.5) 50%, transparent 70%);
+    transform: translateX(-120%); transition: transform 0.9s;
+  }
+  .cta:hover { background: linear-gradient(135deg, #f6e8c6 0%, #d4b176 55%, #b8935a 100%); transform: translateY(-2px); }
+  .cta:hover::after { transform: translateX(120%); }
 
-        /* Секция услуг */
-        .services {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 80px;
-            border-top: 1px solid var(--line);
-        }
+  footer { margin-top: 80px; text-align: center; font-size: 13px; letter-spacing: 0.1em; color: rgba(140, 138, 156, 0.75); }
+  footer i { display: block; width: 6px; height: 6px; margin: 0 auto 22px; background: var(--gold); transform: rotate(45deg); opacity: 0.8; }
 
-        .service-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 40px 0;
-            border-bottom: 1px solid var(--line);
-            transition: all 0.4s ease;
-            cursor: default;
-            position: relative;
-        }
+  .toast {
+    position: fixed; left: 50%; bottom: calc(28px + env(safe-area-inset-bottom, 0px)); z-index: 5;
+    transform: translate(-50%, 14px); padding: 14px 24px; border-radius: 999px;
+    background: var(--ivory); color: var(--bg); font-size: 15px; font-weight: 500; white-space: nowrap;
+    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.7);
+    opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.3s;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-        /* Эффект при наведении на строку */
-        .service-row:hover {
-            padding-left: 20px; /* Сдвиг вправо */
-        }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
 
-        .service-row::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 2px;
-            background: var(--accent);
-            transform: scaleY(0);
-            transition: transform 0.4s ease;
-            transform-origin: bottom;
-        }
-
-        .service-row:hover::before {
-            transform: scaleY(1);
-        }
-
-        .service-info {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .service-title {
-            font-size: 24px;
-            font-weight: 500;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: color 0.3s ease;
-        }
-
-        .service-row:hover .service-title {
-            color: #fff;
-        }
-
-        .service-desc {
-            font-size: 15px;
-            color: var(--text-muted);
-            font-weight: 300;
-            max-width: 500px;
-            line-height: 1.6;
-        }
-
-        /* Иконка-стрелочка */
-        .arrow-icon {
-            font-size: 24px;
-            color: var(--text-muted);
-            transition: all 0.4s ease;
-            opacity: 0;
-            transform: translateX(-10px);
-        }
-
-        .service-row:hover .arrow-icon {
-            opacity: 1;
-            transform: translateX(0);
-            color: var(--accent);
-        }
-
-        /* Секция контактов */
-        .contacts-section {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .contacts-title {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--text-muted);
-            margin-bottom: 30px;
-        }
-
-        .links {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .btn {
-            text-decoration: none;
-            color: var(--text-main);
-            font-size: 14px;
-            font-weight: 500;
-            padding: 16px 32px;
-            border: 1px solid var(--line);
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255,255,255,0.02);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--text-main);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 0;
-        }
-
-        .btn span {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* При наведении кнопка становится белой, текст черным */
-        .btn:hover {
-            color: var(--bg);
-            border-color: var(--text-main);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-        }
-
-        .btn:hover::after {
-            opacity: 1;
-        }
-
-        /* Кнопка "Написать" */
-        .btn-primary {
-            background: var(--text-main);
-            color: var(--bg);
-            border: none;
-            padding: 20px 50px;
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 50px;
-            box-shadow: 0 0 30px rgba(255,255,255,0.1);
-        }
-
-        .btn-primary::after {
-            background: #fff;
-        }
-
-        .btn-primary:hover {
-            box-shadow: 0 0 40px rgba(255,255,255,0.3);
-            transform: translateY(-3px) scale(1.02);
-        }
-
-        /* Футер */
-        .footer {
-            margin-top: 60px;
-            font-size: 12px;
-            color: #52525b;
-            letter-spacing: 1px;
-            text-align: center;
-        }
-
-        /* Мобильная версия */
-        @media (max-width: 600px) {
-            .header h1 { font-size: 42px; }
-            .header p { font-size: 11px; letter-spacing: 4px; }
-            .container { padding: 60px 20px; }
-            
-            .service-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-                padding: 30px 0;
-            }
-            .service-row:hover {
-                padding-left: 10px;
-            }
-            .arrow-icon {
-                display: none;
-            }
-            
-            .links {
-                flex-direction: column;
-                width: 100%;
-            }
-            .btn {
-                justify-content: center;
-                width: 100%;
-            }
-            .btn-primary {
-                width: 100%;
-            }
-        }
-    </style>
+  @media (max-width: 420px) {
+    .wrap { padding-left: 20px; padding-right: 20px; }
+    .tag { font-size: 12px; letter-spacing: 0.42em; padding-left: 0.42em; }
+    .panel { padding: 28px 22px 26px; border-radius: 24px; }
+    .pill { padding: 20px 22px; font-size: 17px; }
+    .contact-label { font-size: 12.5px; letter-spacing: 0.34em; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
 </head>
 <body>
+  <div class="bg" aria-hidden="true">
+    <div class="orb a"></div>
+    <div class="orb b"></div>
+    <div class="grain"></div>
+  </div>
 
-    <!-- Фоновое свечение -->
-    <div class="ambient-glow"></div>
+  <main class="wrap">
+    <header>
+      <h1>Franko</h1>
+      <div class="orn" aria-hidden="true"><i></i></div>
+      <p class="tag">Digital Services</p>
+    </header>
 
-    <div class="container">
-        <!-- Заголовок -->
-        <header class="header">
-            <h1>Franko</h1>
-            <p>Digital Services</p>
-        </header>
+    <div class="rest">
+      <section class="services" aria-label="Услуги">
+        <article class="panel">
+          <div class="head">
+            <span class="icon" aria-hidden="true">🤖</span>
+            <h2>Разработка ботов</h2>
+          </div>
+          <p>Создание Telegram и Discord ботов любой сложности. От простых утилит до полноценных RP-систем с базой данных.</p>
+          <div class="chips"><span>Telegram</span><span>Discord</span><span>RP-системы</span><span>База данных</span></div>
+        </article>
 
-        <!-- Услуги (Журнальный стиль) -->
-        <div class="services">
-            <div class="service-row">
-                <div class="service-info">
-                    <div class="service-title">
-                        <span>🤖</span> Разработка ботов
-                    </div>
-                    <div class="service-desc">
-                        Создание Telegram и Discord ботов любой сложности. От простых утилит до полноценных RP-систем с базой данных.
-                    </div>
-                </div>
-                <div class="arrow-icon">↗</div>
-            </div>
+        <article class="panel">
+          <div class="head">
+            <span class="icon" aria-hidden="true">💳</span>
+            <h2>Оплата зарубежных сервисов</h2>
+          </div>
+          <p>Помощь с покупками и оформлением подписок в Steam, Discord, а также любых других зарубежных сервисах.</p>
+          <div class="chips"><span>Steam</span><span>Discord</span><span>Подписки</span><span>Любые сервисы</span></div>
+        </article>
+      </section>
 
-            <div class="service-row">
-                <div class="service-info">
-                    <div class="service-title">
-                        <span>💳</span> Оплата зарубежных сервисов
-                    </div>
-                    <div class="service-desc">
-                        Помощь с покупками и оформлением подписок в Steam, Discord, а также любых других зарубежных сервисах.
-                    </div>
-                </div>
-                <div class="arrow-icon">↗</div>
-            </div>
-        </div>
+      <section aria-label="Контакты">
+        <h3 class="contact-label">Связаться со мной</h3>
 
-        <!-- Контакты -->
-        <div class="contacts-section">
-            <div class="contacts-title">Связаться со мной</div>
-            <div class="links">
-                <a href="https://t.me/kiduma" class="btn" target="_blank">
-                    <span>Telegram</span>
-                </a>
-                <a href="https://discord.com/users/t8x9o" class="btn" target="_blank" id="discord-btn">
-                    <span>Discord</span>
-                </a>
-                <a href="https://www.tiktok.com/@dxbxckwood" class="btn" target="_blank">
-                    <span>TikTok</span>
-                </a>
-            </div>
-            
-            <a href="https://t.me/kiduma" class="btn btn-primary" target="_blank">
-                Написать в Telegram
-            </a>
-        </div>
+        <a class="pill" href="https://t.me/kiduma" target="_blank" rel="noopener">
+          <span>Telegram</span>
+          <span class="r">@kiduma
+            <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </span>
+        </a>
 
-        <!-- Футер -->
-        <div class="footer">
-            &copy; 2026 Franko. All rights reserved.
-        </div>
+        <button class="pill" id="discord" type="button" aria-label="Скопировать Discord t8x9o">
+          <span>Discord</span>
+          <span class="r">@t8x9o
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></svg>
+          </span>
+        </button>
+
+        <a class="pill" href="https://www.tiktok.com/@dxbxckwood" target="_blank" rel="noopener">
+          <span>TikTok</span>
+          <span class="r">@dxbxckwood
+            <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </span>
+        </a>
+
+        <a class="pill cta" href="https://t.me/kiduma" target="_blank" rel="noopener">Написать в Telegram</a>
+      </section>
+
+      <footer>
+        <i aria-hidden="true"></i>
+        © 2026 Franko. All rights reserved.
+      </footer>
     </div>
+  </main>
 
-    <script>
-        // Копирование Discord тега при клике
-        const discordBtn = document.getElementById('discord-btn');
-        discordBtn.addEventListener('click', (e) => {
-            navigator.clipboard.writeText('t8x9o').then(() => {
-                const span = discordBtn.querySelector('span');
-                const originalText = span.innerText;
-                span.innerText = 'Скопировано!';
-                setTimeout(() => {
-                    span.innerText = originalText;
-                }, 2000);
-            });
-        });
-    </script>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  // подсветка карточек за курсором
+  document.querySelectorAll(".panel").forEach(function (p) {
+    p.addEventListener("pointermove", function (e) {
+      var r = p.getBoundingClientRect();
+      p.style.setProperty("--mx", e.clientX - r.left + "px");
+      p.style.setProperty("--my", e.clientY - r.top + "px");
+    });
+  });
+
+  // копирование Discord
+  var toast = document.getElementById("toast");
+  var timer;
+  document.getElementById("discord").addEventListener("click", function () {
+    var name = "t8x9o";
+    function show(ok) {
+      toast.textContent = ok ? "Discord @" + name + " скопирован" : "Мой Discord: @" + name;
+      toast.classList.add("show");
+      clearTimeout(timer);
+      timer = setTimeout(function () { toast.classList.remove("show"); }, 2400);
+    }
+    function fallback() {
+      var ok = false;
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = name;
+        ta.style.cssText = "position:fixed;opacity:0";
+        document.body.appendChild(ta);
+        ta.select();
+        ok = document.execCommand("copy");
+        ta.remove();
+      } catch (e) {}
+      show(ok);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(name).then(function () { show(true); }, fallback);
+    } else {
+      fallback();
+    }
+  });
+</script>
 </body>
 </html>
